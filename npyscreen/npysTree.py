@@ -1,23 +1,33 @@
 import weakref
 import collections
 
+
 class TreeData(object):
     # This is a new version of NPSTreeData that follows PEP8.
     CHILDCLASS = None
-    def __init__(self, content=None, parent=None, selected=False, selectable=True,
-                    highlight=False, expanded=True, ignore_root=True, sort_function=None):
+
+    def __init__(
+        self,
+        content=None,
+        parent=None,
+        selected=False,
+        selectable=True,
+        highlight=False,
+        expanded=True,
+        ignore_root=True,
+        sort_function=None,
+    ):
         self.set_parent(parent)
         self.set_content(content)
         self.selectable = selectable
-        self.selected   = selected
-        self.highlight  = highlight
-        self.expanded   = expanded
-        self._children  = []
+        self.selected = selected
+        self.highlight = highlight
+        self.expanded = expanded
+        self._children = []
         self.ignore_root = ignore_root
-        self.sort       = False
+        self.sort = False
         self.sort_function = sort_function
         self.sort_function_wrapper = True
-
 
     def get_content(self):
         return self.content
@@ -43,7 +53,6 @@ class TreeData(object):
     def get_parent(self):
         return self._parent
 
-
     def find_depth(self, d=0):
         parent = self.get_parent()
         while parent:
@@ -51,9 +60,9 @@ class TreeData(object):
             parent = parent.get_parent()
         return d
         # Recursive
-        #if self._parent == None:
+        # if self._parent == None:
         #    return d
-        #else:
+        # else:
         #    return(self._parent.findDepth(d+1))
 
     def is_last_sibling(self):
@@ -103,7 +112,6 @@ class TreeData(object):
                 ch.set_parent(None)
         self._children = new_children
 
-
     def create_wrapped_sort_function(self, this_function):
         def new_function(the_item):
             if the_item:
@@ -111,6 +119,7 @@ class TreeData(object):
                 return this_function(the_real_item)
             else:
                 return the_item
+
         return new_function
 
     def walk_parents(self):
@@ -119,8 +128,10 @@ class TreeData(object):
             yield p
             p = p.get_parent()
 
-    def walk_tree(self, only_expanded=True, ignore_root=True, sort=None, sort_function=None):
-        #Iterate over Tree
+    def walk_tree(
+        self, only_expanded=True, ignore_root=True, sort=None, sort_function=None
+    ):
+        # Iterate over Tree
         if sort is None:
             sort = self.sort
 
@@ -140,29 +151,36 @@ class TreeData(object):
         # example sort function #             return frm
         # example sort function #     else:
         # example sort function #         return the_item
-        #key = operator.methodcaller('getContent',)
+        # key = operator.methodcaller('getContent',)
 
         if self.sort_function_wrapper and sort_function:
-           # def wrapped_sort_function(the_item):
-           #     if the_item:
-           #         the_real_item = the_item.getContent()
-           #         return sort_function(the_real_item)
-           #     else:
-           #         return the_item
-           # _this_sort_function = wrapped_sort_function
-           _this_sort_function = self.create_wrapped_sort_function(sort_function)
+            # def wrapped_sort_function(the_item):
+            #     if the_item:
+            #         the_real_item = the_item.getContent()
+            #         return sort_function(the_real_item)
+            #     else:
+            #         return the_item
+            # _this_sort_function = wrapped_sort_function
+            _this_sort_function = self.create_wrapped_sort_function(sort_function)
         else:
             _this_sort_function = sort_function
 
         key = _this_sort_function
         if not ignore_root:
             yield self
-        nodes_to_yield = collections.deque() # better memory management than a list for pop(0)
+        nodes_to_yield = (
+            collections.deque()
+        )  # better memory management than a list for pop(0)
         if self.expanded or not only_expanded:
             if sort:
                 # This and the similar block below could be combined into a nested function
                 if key:
-                    nodes_to_yield.extend(sorted(self.get_children(), key=key,))
+                    nodes_to_yield.extend(
+                        sorted(
+                            self.get_children(),
+                            key=key,
+                        )
+                    )
                 else:
                     nodes_to_yield.extend(sorted(self.get_children()))
             else:
@@ -174,11 +192,15 @@ class TreeData(object):
                     if sort:
                         if key:
                             # must be reverse because about to use extendleft() below.
-                            nodes_to_yield.extendleft(sorted(child.get_children(), key=key, reverse=True))
+                            nodes_to_yield.extendleft(
+                                sorted(child.get_children(), key=key, reverse=True)
+                            )
                         else:
-                            nodes_to_yield.extendleft(sorted(child.get_children(), reverse=True))
+                            nodes_to_yield.extendleft(
+                                sorted(child.get_children(), reverse=True)
+                            )
                     else:
-                        #for node in child.getChildren():
+                        # for node in child.getChildren():
                         #    if node not in nodes_to_yield:
                         #        nodes_to_yield.appendleft(node)
                         yield_these = list(child.get_children())
@@ -189,7 +211,9 @@ class TreeData(object):
 
     def get_tree_as_list(self, only_expanded=True, sort=None, key=None):
         _a = []
-        for node in self.walk_tree(only_expanded=only_expanded, ignore_root=self.ignore_root, sort=sort):
+        for node in self.walk_tree(
+            only_expanded=only_expanded, ignore_root=self.ignore_root, sort=sort
+        ):
             try:
                 _a.append(weakref.proxy(node))
             except:
