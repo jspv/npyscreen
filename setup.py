@@ -2,27 +2,27 @@
 from distutils.core import setup
 
 setup(
-	name="npyscreen",
-	version="4.9.1",
-	description="Writing user interfaces without all that ugly mucking about in hyperspace",
-	author="Nicholas Cole",
-	author_email="n@npcole.com",
-	url="http://www.npcole.com/npyscreen/",
-	packages=['npyscreen', 'npyscreen.compatibility_code'],
-	license='New BSD License',
-	classifiers= [
-	    'Development Status :: 5 - Production/Stable',
-	    'Programming Language :: Python :: 3',
-	    'Programming Language :: Python :: 2.6',
-	    'Programming Language :: Python :: 2.7',
-	    'Environment :: Console',
-	    'Operating System :: POSIX',
-	    'Environment :: Console :: Curses',
-	    'Intended Audience :: Developers',
-	    'License :: OSI Approved :: BSD License',
-	    'Topic :: Terminals'
-	    ],
-	long_description = """This library provides a framework for developing console applications using Python and curses.
+    name="npyscreen",
+    version="4.10.5.1",
+    description="Writing user interfaces without all that ugly mucking about in hyperspace",
+    author="Nicholas Cole",
+    author_email="n@npcole.com",
+    url="http://www.npcole.com/npyscreen/",
+    packages=["npyscreen", "npyscreen.compatibility_code"],
+    license="New BSD License",
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Environment :: Console",
+        "Operating System :: POSIX",
+        "Environment :: Console :: Curses",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Topic :: Terminals",
+    ],
+    long_description="""This library provides a framework for developing console applications using Python and curses.
 
 This framework should be powerful enough to create everything from quick, simple programs to complex, multi-screen applications. It is designed to make doing the simple tasks very quick and to take much of the pain out of writing larger applications.
 
@@ -38,6 +38,14 @@ There is a mailing list available at https://groups.google.com/forum/?fromgroups
 
 
 *Latest Changes*:
+
+Version 4.10.5.1: Black formatting and some linting; now allows the use of stderr
+
+Version 4.10.5: Merged in bug-fixes and enhancements suggested by Nathan Lewis.
+
+Version 4.10.0: All widgets have a safe_to_exit() method that will be called (at least by the default handlers) before exiting a widget. 
+Users can perform input verification functions here. Return True if the widget should allow exiting, or False if it should not. Various 
+minor bug-fixes.
 
 Version 4.9.1: minor change to Multiline widgets to make custom versions easier (final widget value is never set to MORE_LABEL).
 
@@ -204,5 +212,5 @@ additional color options.
 Version 2.0pre52 fixes compatibility with python2.6, 3.0 and 3.1.  All other versions should be unaffected.
 
 Version 2.0pre50 enables basic mouse support.  Note that the Apple terminal does not handle mouse events correctly.
-"""
+""",
 )
